@@ -7,6 +7,8 @@ const SignInPage = () => {
   const navigate = useNavigate()
   const login = useGoogleLogin({
     scope: "https://www.googleapis.com/auth/tasks",
+      redirect_uri: "https://task-management-app-rho-pink.vercel.app", 
+
     onSuccess: async (tokenResponse) => {
       try {
         const accessToken = tokenResponse.access_token;
