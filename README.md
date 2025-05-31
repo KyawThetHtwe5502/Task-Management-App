@@ -35,3 +35,4 @@
 [] React Router DOM	for Page navigation and routing
 [] React Hook Form for formSummit
 [] lucide-react for icons
+[] Vercel for deploy
