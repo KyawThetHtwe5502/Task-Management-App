@@ -19,9 +19,7 @@ const getStatus = (status) => {
   };
       const addToTask = async (formData ) => {
         console.log(formData,"formdata")
-//  const time = combineDateAndTime(formData.endDate,formData.endTime)
- 
-// console.log(time,"time")
+
   try {
     const response = await fetch(
       "https://tasks.googleapis.com/tasks/v1/lists/@default/tasks",

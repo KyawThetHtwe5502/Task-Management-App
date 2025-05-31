@@ -1,12 +1,37 @@
-# React + Vite
+# TASK_MANAGEMENT_APP
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Feature
 
-Currently, two official plugins are available:
+## Auth
+[] Google Sign-in with OAuth2
+[] When accessToken expire, login again
+[] Google OAuth2 not support refreshToken
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Todo
 
-## Expanding the ESLint configuration
+### TodoList
+[] TaskList using Google Task Api
+[] filter status(completed,needsAction) and date(selectDate)
+[] redirect to TodoCreatePage and TodoDetailPage
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### TodoCreatePage
+[] create by  title,notes,getStatus(formData.status),hidden,due 
+[] readOnly starts(data and time) and ends(time) because of due not support time ,only date 
+[] redirect to TodoListPage
+
+### TodoDetailPage
+[] readOnly data
+[] delete task and back to TodoListPage
+[] redirect to TodoEditPage
+
+### TodoEditPage
+[] edit by  title,notes,getStatus(formData.status),hidden,due
+[] redirect to TodoDetailPage
+
+
+#### Tech Stack
+[] React.js , TailwindCss, Vite
+[] @react-oauth/google for Google OAuth2 Authentication
+[] React Router DOM	for Page navigation and routing
+[] React Hook Form for formSummit
+[] lucide-react for icons
