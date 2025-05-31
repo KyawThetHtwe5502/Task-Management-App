@@ -57,7 +57,7 @@ const DateTimePicker = ({
               const isToday = format(date, 'yyyy-MM-dd') === format(new Date(), 'yyyy-MM-dd');
               
               return (
-                <button
+                <button type='button'
                   key={date.toString()}
                   onClick={() => handleDateSelect(date)}
                   className={`h-10 rounded-full flex items-center justify-center text-sm transition-colors

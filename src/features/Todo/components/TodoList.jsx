@@ -1,36 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import TaskForm from './TaskForm';
+import React, { useEffect } from 'react';
 import { format } from 'date-fns';
-import { Plus } from 'lucide-react';
 import { useTaskStore } from '../../../store/useTaskStore';
 import TodoItem from './TodoItem';
 
 const TodoList = () => {
-  const { 
-    tasks, 
-    selectedDate, 
-    filterValue, 
-    searchQuery 
-  } = useTaskStore();
-  const [isFormOpen, setIsFormOpen] = useState(false);
-  const filteredTasks = tasks.filter((task) => {
-    // Filter by date
-    const matchesDate = task.date === format(selectedDate, 'yyyy-MM-dd');
-    
-    // Filter by status (if filter is active)
-    const matchesFilter = !filterValue || task.status === filterValue;
-    
-    // Filter by search query
-    const matchesSearch = !searchQuery || 
-      task.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      task.description.toLowerCase().includes(searchQuery.toLowerCase());
-    
-    return matchesDate && matchesFilter && matchesSearch;
-  });
+  
+  const {selectedDate,tasks,setTasks,filterValue,searchQuery} = useTaskStore();
+  console.log(tasks,"tasks")
 const accessToken = localStorage.getItem("google_access_token")
   useEffect(() => {
     (async () => {
-      const res =  await fetch("https://tasks.googleapis.com/tasks/v1/users/@me/lists", {
+      const res =  await fetch("https://tasks.googleapis.com/tasks/v1/lists/@default/tasks", {
           headers: {
             Authorization: `Bearer ${accessToken}`,
             Accept: "application/json",
@@ -40,11 +20,36 @@ const accessToken = localStorage.getItem("google_access_token")
         if (!res.ok) throw new Error("Failed to fetch task lists");
 
         const data = await res.json();
+        setTasks(data.items)
         console.log(data,"data")
     })()  
   
   },[])
-  
+
+
+  const getFilteredTasks = (tasks, selectedDate, filterValue, searchQuery) => {
+  return tasks.filter((task) => {
+    const matchesFilterValue =
+      filterValue === "All tasks" || !filterValue
+        ? true
+        : task.status === filterValue;
+
+    const matchesSearch =
+      !searchQuery ||
+      task.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      task.notes?.toLowerCase().includes(searchQuery.toLowerCase());
+
+    const matchesDate =
+      !selectedDate ||
+      format(new Date(task.updated), 'yyyy-MM-dd') === format(selectedDate, 'yyyy-MM-dd');
+
+    return matchesFilterValue && matchesSearch && matchesDate;
+  });
+};
+
+
+
+  const filteredTasks = getFilteredTasks(tasks,selectedDate,filterValue,searchQuery)
   return (
     <div className="p-4 space-y-4 ">
       <div className="grid gap-4">
@@ -59,17 +64,6 @@ const accessToken = localStorage.getItem("google_access_token")
         )}
       </div>
       
-      {/* {isFormOpen ? (
-        <TaskForm onClose={() => setIsFormOpen(false)} />
-      ) : (
-        <button
-          onClick={() => setIsFormOpen(true)}
-          className="fixed bottom-6 right-6 w-14 h-14 bg-blue-600 text-white rounded-full shadow-lg flex items-center justify-center hover:bg-blue-700 transition-colors"
-          aria-label="Add task"
-        >
-          <Plus size={24} />
-        </button>
-      )} */}
       
     </div>
   );

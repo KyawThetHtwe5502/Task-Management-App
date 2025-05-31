@@ -49,6 +49,7 @@ const Header = () => {
       <div className="grid grid-cols-7 text-center">
         {days.map((day) => {
           const isSelected = format(day, 'yyyy-MM-dd') === format(selectedDate, 'yyyy-MM-dd');
+          
           return (
             <div key={day.toISOString()} className="py-2">
               <button

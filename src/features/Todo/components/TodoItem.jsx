@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { MoreVertical, Edit, Trash2, ChevronRight } from 'lucide-react';
 import TaskForm from './TaskForm';
 import { useTaskStore } from '../../../store/useTaskStore';
+import { Link } from 'react-router-dom';
 
 
 const TodoItem = ({ task }) => {
@@ -9,17 +10,11 @@ const TodoItem = ({ task }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
-
+  
   const getBorderColor = () => {
-    switch (task.category) {
-      case 'green':
-        return 'border-l-green-500';
-      case 'yellow':
-        return 'border-l-yellow-500';
-      case 'red':
-        return 'border-l-red-500';
-      case 'purple':
-        return 'border-l-purple-500';
+    switch (task.status) {
+      case 'completed':
+        return 'border-l-[#039855]';
       default:
         return 'border-l-blue-600';
     }
@@ -27,16 +22,16 @@ const TodoItem = ({ task }) => {
 
   const getStatusButton = () => {
     switch (task.status) {
-      case 'complete':
+      case 'completed':
         return (
-          <span className="bg-green-500 text-white px-4 py-1.5 rounded-md">
+          <span className="bg-[#039855] text-white px-4 py-1.5 rounded-md">
             Complete
           </span>
         );
-      case 'processing':
+      case 'needsAction':
         return (
           <span className="bg-blue-600 text-white px-4 py-1.5 rounded-md">
-            Processing
+            needsAction
           </span>
         );
       default:
@@ -51,30 +46,22 @@ const TodoItem = ({ task }) => {
     }
   };
 
-  const handleStatusToggle = () => {
-    if (task.status === 'todo') {
-      updateTask(task.id, { status: 'processing' });
-    } else if (task.status === 'processing') {
-      updateTask(task.id, { status: 'complete' });
-    } else {
-      updateTask(task.id, { status: 'todo' });
-    }
-  };
+  
 
   if (isEditing) {
     return <TaskForm task={task} onClose={() => setIsEditing(false)} />;
   }
 
   return (
-    <div
-      className={`bg-white rounded-lg shadow-sm border-l-4 ${getBorderColor()} overflow-hidden transition-all hover:shadow-md`}
+    <Link to={`detail/${task.id}`}
+      className={`bg-white rounded-lg ${task?.hidden && "opacity-70"} shadow-sm border-l-4 ${getBorderColor()} overflow-hidden transition-all hover:shadow-md`}
     >
-      <div className="p-4">
+      <div className="p-4 flex justify-between items-center">
         <div className="flex justify-between items-start">
           <div className="flex-1">
             <div className="flex items-center space-x-2">
               <h3 className="font-medium text-gray-900">{task.title}</h3>
-              <button
+              {/* <button
                 onClick={() => setShowDetails(!showDetails)}
                 className="p-1 rounded-full hover:bg-gray-100 transition-colors"
               >
@@ -82,14 +69,14 @@ const TodoItem = ({ task }) => {
                   size={16}
                   className={`transform transition-transform ${showDetails ? 'rotate-90' : ''}`}
                 />
-              </button>
+              </button> */}
             </div>
-            <div className="text-sm text-gray-500 mt-1">
-              {task.startTime} - {task.endTime}
+            <div className="text-sm text-gray-500 mt-1 line-clamp-1">
+              {task.notes}
             </div>
           </div>
           
-          <div className="relative">
+          {/* <div className="relative">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="p-1.5 rounded-full hover:bg-gray-100 transition-colors"
@@ -126,25 +113,14 @@ const TodoItem = ({ task }) => {
                 </ul>
               </div>
             )}
-          </div>
+          </div> */}
         </div>
         
-        {showDetails && (
-          <div className="mt-3 text-sm text-gray-600 border-t border-gray-100 pt-3">
-            <p>{task.description}</p>
-            {task.notifications && (
-              <div className="mt-2 text-blue-600">
-                Notifications enabled
-              </div>
-            )}
-          </div>
-        )}
-        
-        <div className="mt-3 flex justify-end">
-          <div onClick={handleStatusToggle}>{getStatusButton()}</div>
+        <div >
+          <button >{getStatusButton()}</button>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

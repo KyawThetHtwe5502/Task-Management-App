@@ -1,7 +1,7 @@
 import React from 'react'
 import TodoDetailPage from '../features/Todo/pages/TodoDetailPage'
-import TodoCreatePage from '../features/Todo/pages/TodoCreatePage'
 import TodoEditPage from '../features/Todo/pages/TodoEditPage'
+import TodoCreatePage from '../features/Todo/pages/TodoCreatePage'
 
 const todoRoutes = [
     

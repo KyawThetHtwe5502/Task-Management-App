@@ -1,13 +1,16 @@
 import React from 'react'
 import { useForm } from 'react-hook-form';
+import { useParams } from 'react-router-dom';
 
-const useCreateTask = () => {
+const useUpdateTask = () => {
+    const {id} = useParams()
           const accessToken = localStorage.getItem("google_access_token");
 const {
     register,
     handleSubmit,
     formState: { errors },setValue} = useForm();
            
+
 
 const getStatus = (status) => {
     switch (status) {
@@ -17,16 +20,16 @@ const getStatus = (status) => {
         return 'needsActions';
     }
   };
-      const addToTask = async (formData ) => {
+
+  
+      const updateTask = async (formData ) => {
         console.log(formData,"formdata")
-//  const time = combineDateAndTime(formData.endDate,formData.endTime)
  
-// console.log(time,"time")
   try {
     const response = await fetch(
-      "https://tasks.googleapis.com/tasks/v1/lists/@default/tasks",
+      `https://tasks.googleapis.com/tasks/v1/lists/@default/tasks/${id}`,
       {
-        method: "POST",
+        method: "PATCH",
         headers: {
           Authorization: `Bearer ${accessToken}`, // ✅ fixed template literal
           "Content-Type": "application/json",
@@ -36,7 +39,7 @@ const getStatus = (status) => {
           notes:   formData.notes,
           status: getStatus(formData.status),
           hidden: formData.hidden,
-          due: formData.due,
+          due: formData.hidden,
         }),
       }
     );
@@ -60,9 +63,9 @@ const getStatus = (status) => {
         handleSubmit,
         errors,
         setValue,
-        addToTask
+        updateTask
     }
   )
 }
 
-export default useCreateTask
+export default useUpdateTask
